@@ -3,6 +3,8 @@ var fs = require('fs');
 var url = require('url');
 var qs = require('querystring');
 var template = require('./lib/template.js');
+var path = require('path');
+var sanitizeHtml = require('sanitize-html'); //npm install -S sanitize-html
 //Refactoring 
 var app = http.createServer(function(request,response){
     var _url = request.url;
@@ -23,15 +25,20 @@ var app = http.createServer(function(request,response){
         });
       } else {
         fs.readdir('./data',function(error, filelist){
-          fs.readFile(`data/${queryData.id}`,'utf8',function(err,description) {
+          var filteredId = path.parse(queryData.id).base; //보안처리
+          fs.readFile(`data/${filteredId}`,'utf8',function(err,description) {
             var title = queryData.id;
+            var sanitizedTitle = sanitizeHtml(title);
+            var sanitizedDescription = sanitizeHtml(description, {
+              allowedTags:['h1']
+            });
             var list = template.list(filelist);
-            var html = template.HTML(title, list, 
-              `<h2>${title}</h2>${description}`, 
+            var html = template.HTML(sanitizedTitle, list, 
+              `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`, 
               `<a href="/create">create</a> 
-                <a href="/update?id=${title}">update</a>
+                <a href="/update?id=${sanitizedTitle}">update</a>
                 <form action="delete_process" method="post">
-                  <input type="hidden" name="id" value="${title}">
+                  <input type="hidden" name="id" value="${sanitizedTitle}">
                   <input type="submit" value="delete">
                 </form>`
               );
@@ -74,23 +81,28 @@ var app = http.createServer(function(request,response){
     });
   } else if (pathname==='/update') {
     fs.readdir('./data',function(error, filelist){
-      fs.readFile(`data/${queryData.id}`,'utf8',function(err,description) {
+      var filteredId = path.parse(queryData.id).base;
+      fs.readFile(`data/${filteredId}`,'utf8',function(err,description) {
         var title = queryData.id;
+        var sanitizedTitle = sanitizeHtml(title);
+        var sanitizedDescription = sanitizeHtml(description, {
+          allowedTags:['h1']
+        });
         var list = template.list(filelist);
-        var html = template.HTML(title, list, 
+        var html = template.HTML(sanitizedTitle, list, 
           `
           <form action="/update_process" method="post">
-          <input type="hidden" name="id" value="${title}">
-          <p><input type="text" name="title" placeholder="title" value="${title}"></p>
+          <input type="hidden" name="id" value="${sanitizedTitle}">
+          <p><input type="text" name="title" placeholder="title" value="${sanitizedTitle}"></p>
           <p>
-            <textarea name="description" placeholder="description"> ${description}</textarea>
+            <textarea name="description" placeholder="description"> ${sanitizedDescription}</textarea>
           </p>
           <p>
             <input type="submit">
           </p>
         </form>
         `, 
-          `<a href="/create">create</a> <a href="/update?id=${title}">update </a>`
+          `<a href="/create">create</a> <a href="/update?id=${sanitizedTitle}">update </a>`
           );
       response.writeHead(200);
       response.end(html);
