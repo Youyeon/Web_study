@@ -1,3 +1,5 @@
+// pm2 start main.js --watch
+// npm init : Create package.json
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
@@ -143,4 +145,4 @@ var app = http.createServer(function(request,response){
     response.end('Not Found')
   }
 });
-app.listen(3000);
+app.listen(3000); //Starts the HTTP server listening for connections (Parameter: PortNum)
