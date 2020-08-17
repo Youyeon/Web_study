@@ -1,17 +1,4 @@
-const express = require('express');
-const app = express();
-
-app.get('/', function(req, res) {
-  return res.send('/')
-});
-app.get('/page', function(req, res) {
-  return res.send('/page')
-});
-app.listen(3000, function() {
-  console.log('Example app listening on port 3000');
-});
 // npm init : Create package.json
-/*
 var http = require('http');
 var url = require('url');
 var topic = require('./lib/topic');
@@ -52,4 +39,4 @@ var app = http.createServer(function(request,response){
   }
 });
 app.listen(3000); //Starts the HTTP server listening for connections (Parameter: PortNum)
-*/
+
