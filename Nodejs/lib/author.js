@@ -1,9 +1,7 @@
-var express = require('express');
-var app = express();
 var template = require('./template.js');
 var db = require('./db');
 var sanitizeHtml = require('sanitize-html');
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser'); //express에 내장
 
 exports.home = function(request,response) {
     db.query(`SELECT * FROM topic`,function(error,topics) {
