@@ -8,6 +8,7 @@ var author = require('./lib/author');
 var bodyParser = require('body-parser'); //express에 내장
 var compression = require('compression');
 
+app.use(express.static('public')); //public directory 안에서 static file을 찾음
 app.use(bodyParser.urlencoded({extended: false})); //body-parser middleware
 app.use(compression()); //compression middleware
 
@@ -47,8 +48,12 @@ app.post('/author/update_process', function(request, response) {
 app.post('/author/delete_process', function(request, response) {
   author.delete_process(request, response);
 });
-app.listen(3000,function(){});
 
-// app.use(function (req, res, next) {
-//   res.status(404).send('404 NOT FOUND');
-// });
+app.use(function (req, res, next) {
+  res.status(404).send('404 NOT FOUND');
+});
+app.use(function(err, req, res, next) {
+  res.status(500).send('Something Broke!');
+});
+
+app.listen(3000,function(){});

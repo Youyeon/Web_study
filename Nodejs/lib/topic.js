@@ -3,7 +3,6 @@ var db = require('./db');
 var sanitizeHtml = require('sanitize-html'); // npm install -S sanitize-html
 var bodyParser = require('body-parser'); //express에 내장
 
-app.use(bodyParser.urlencoded({extended: false})); //body-parser middleware
 
 exports.home = function(request, response) {
     db.query(`SELECT * from topic`,function(error,topics) {
@@ -11,7 +10,8 @@ exports.home = function(request, response) {
     var description = 'Hello, Node.js';
     var list = template.list(topics);
     var html = template.HTML(title, list,
-      `<h2>${title}</h2>${description}`,
+      `<h2>${title}</h2>${description}
+      <img src="/images/hello.jpg" style="width:100%; display:block; margin-top:10px;">`,
       `<a href="/create">create</a>`
       );
     response.send(html);
