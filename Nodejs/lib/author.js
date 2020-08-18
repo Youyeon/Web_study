@@ -3,6 +3,8 @@ var db = require('./db');
 var sanitizeHtml = require('sanitize-html');
 var bodyParser = require('body-parser'); //express에 내장
 
+app.use(bodyParser.urlencoded({extended: false})); //body-parser middleware
+
 exports.home = function(request,response) {
     db.query(`SELECT * FROM topic`,function(error,topics) {
         db.query(`SELECT * FROM author`,function(error2,authors) {

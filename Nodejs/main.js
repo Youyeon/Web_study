@@ -6,8 +6,10 @@ var url = require('url');
 var topic = require('./lib/topic');
 var author = require('./lib/author');
 var bodyParser = require('body-parser'); //express에 내장
+var compression = require('compression');
 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: false})); //body-parser middleware
+app.use(compression()); //compression middleware
 
 app.get('/', function(request, response) {
   topic.home(request, response);

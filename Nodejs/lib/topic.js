@@ -3,6 +3,8 @@ var db = require('./db');
 var sanitizeHtml = require('sanitize-html'); // npm install -S sanitize-html
 var bodyParser = require('body-parser'); //express에 내장
 
+app.use(bodyParser.urlencoded({extended: false})); //body-parser middleware
+
 exports.home = function(request, response) {
     db.query(`SELECT * from topic`,function(error,topics) {
     var title = 'Welcome';
