@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <body>
+        <article>
+
+        </article>
+        <input type="button" value="fetch" onclick="
+        /*
+            fetch('html').then(function(response) {
+                response.text().then(function(text){
+                    document.querySelector('article').innerHTML = text;
+                })
+            })
+        */
+        //Asynchronous: 비동기식 출력
+        fetch('html').then(function(response) {
+            if (response.status === '404') {
+                alert('NOT FOUND');
+            }
+        });
+        console.log(1);
+        console.log(2); //1 2 response end 순으로 출력됨
+        /*
+        fetch('javascript') : client가 server에 javascript라는 파일을 요청함
+        then : fetch 명령이 끝나면, 괄호 내의 함수 호출
+        function(response) : response를 매개변수로 받는 익명함수 _ 첫번째 인자로 response를 받음
+        */
+        ">
+    </body>
+</html>
