@@ -18,6 +18,9 @@ app.use(session({
   saveUninitialized: true,
   store:new FileStore()
 }))
+/*passport*/
+var passport = require('passport') //내부에서 session을 사용하기에 session 활성화 이후에 코드 작성 해야함
+  , LocalStrategy = require('passport-local').Strategy;
 
 app.get('*', function(request, response, next){
   fs.readdir('./data', function(error, filelist){
