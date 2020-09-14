@@ -1,2 +1,2 @@
 # Web_study
-Web Study
+## Web Study with 생활코딩
