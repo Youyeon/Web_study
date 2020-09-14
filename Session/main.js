@@ -7,7 +7,7 @@ var helmet = require('helmet')
 app.use(helmet());
 var session = require('express-session')
 var FileStore = require('session-file-store')(session)
-
+var flash = require('connect-flash');
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,6 +18,7 @@ app.use(session({
   saveUninitialized: true,
   store:new FileStore()
 }))
+app.use(flash()); //내부에서 session 사용 -> session 활성화 이후 코드
 
 var authData = {
   email: 'egoing777@gmail.com',
@@ -48,7 +49,9 @@ passport.use(new LocalStrategy( {
   function(username, password, done) {
     if(username === authData.email) {
       if(password === authData.password) {
-        return done(null, authData);
+        return done(null, authData, {
+          message: 'Welcome.'
+        });
       } else {
         return done(null, false, {
           message: 'Incorrect password.'
@@ -65,8 +68,11 @@ passport.use(new LocalStrategy( {
 app.post('/auth/login_process',
   passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/auth/login' 
-  }));
+    failureRedirect: '/auth/login',
+    failureFlash: true,
+    successFlash: true
+  })
+);
 
 /*passport end*/
 
